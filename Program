@@ -1,0 +1,186 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace AssignmentSENG8040_1
+{
+
+
+    class Program
+    {
+        static Rectangle rect;
+        static int RecLength, RecWidth;
+
+        static void Main(string[] args)
+        {
+            rect = new Rectangle();
+            RecLength = GetRecLength();
+            RecWidth = GetWidth();
+            rect = new Rectangle(RecLength, RecWidth);
+            GetUserInput();
+        }
+        private enum Value
+        {
+            GetRecLength = 1,
+            ChangeRecLength = 2,
+            GetRecWidth = 3,
+            ChangeRecWidth = 4,
+            GetRecPerimeter = 5,
+            GetRecArea = 6,
+            Exit = 7
+        }
+
+        static void HandleChoice(int value)
+        {
+            switch (value)
+            {
+                case (int)Value.GetRecLength:
+                    Console.WriteLine("Length of Rectangle {0}", rect.GetRecLength());
+                    break;
+                case (int)Value.ChangeRecLength:
+                    RecLength = GetRecLength();
+                    Console.WriteLine("Set Length of Rectangle {0}", rect.SetRecLength(RecLength));
+                    break;
+                case (int)Value.GetRecWidth:
+                    Console.WriteLine("Width of Rectangle {0}", rect.GetRecWidth());
+                    break;
+                case (int)Value.ChangeRecWidth:
+                    RecWidth = GetWidth();
+                    Console.WriteLine("Set Width of Rectangle {0}", rect.SetRecWidth(RecWidth));
+                    break;
+                case (int)Value.GetRecPerimeter:
+                    Console.WriteLine("Perimeter of Rectangle {0}", rect.GetPerimeter());
+                    break;
+                case (int)Value.GetRecArea:
+                    Console.WriteLine("Area of Rectangle {0}", rect.GetArea());
+                    break;
+
+            }
+        }
+
+        static void GetUserInput()
+        {
+            int choiceValue;
+            Menu();
+            bool valid;
+            void Menu()
+            {
+                Console.WriteLine("1 = Get Rectangle Length");
+                Console.WriteLine("2 = Change Rectangle Length");
+                Console.WriteLine("3 = Get Rectangle Width");
+                Console.WriteLine("4 = Change Rectangle Width");
+                Console.WriteLine("5 = Get Rectangle Perimeter");
+                Console.WriteLine("6 = Get Rectangle Area");
+                Console.WriteLine("7 = Exit");
+                Console.WriteLine(" ");
+            }
+            while (true)
+            {
+                valid = TryGetUserInput("Please enter your value", out choiceValue);
+                if (!valid)
+                    Menu();
+                else
+                {
+                    if (choiceValue == (int)Value.Exit)
+                        Environment.Exit(0);
+                    HandleChoice(choiceValue);
+                }
+            }
+        }
+
+        static bool TryGetUserInput(string msg, out int choiceValue)
+        {
+            Console.WriteLine(msg);
+            choiceValue = 0;
+            try
+            {
+                if (!int.TryParse(Console.ReadLine(), out choiceValue))
+                    throw new FormatException("Value should be an integer");
+                else if (choiceValue < 0 || choiceValue > 7)
+                {
+                    Console.WriteLine("InCorrect Value");
+                    return false;
+                }
+                return true;
+            }
+            catch (FormatException e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+
+        static int GetRecLength()
+        {
+            int length = 0;
+            bool valid = TryGetLength("Please enter the Length of Rectangle", out length);
+            while (!valid)
+            {
+                valid = TryGetLength("Please enter the Length", out length);
+            }
+            return length;
+        }
+        static bool TryGetLength(string message, out int Reclength)
+        {
+            Console.WriteLine(message);
+            Reclength = 0;
+            try
+            {
+                if (!int.TryParse(Console.ReadLine(), out Reclength))
+                    throw new FormatException("Length should be an integer value");
+                else if (Reclength < 0)
+                {
+                    Console.WriteLine("Length should be greater than 0");
+                    return false;
+                }
+                return true;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        static int GetWidth()
+        {
+            int width = 0;
+            bool valid = TryGetWidth("Please enter the Width", out width);
+            while (!valid)
+            {
+                valid = TryGetWidth("Please enter the Width", out width);
+            }
+            return width;
+        }
+        static bool TryGetWidth(string msg, out int width)
+        {
+            Console.WriteLine(msg);
+            width = 0;
+            try
+            {
+                if (!int.TryParse(Console.ReadLine(), out width))
+                    throw new Exception("Width should be an integer value");
+                else if (width < 0)
+                {
+                    Console.WriteLine("Width shouldnot be less then 0");
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+
+
+
+    }
+}
+
